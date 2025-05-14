@@ -55,6 +55,7 @@ textarea {
     
 </head>
 <body>
+      <p id="p"></p>
     <div class="container">
         <h2>Undo/Redo Feature Using Stack</h2>
         <textarea id="textInput" placeholder="input text..."></textarea>
@@ -115,6 +116,11 @@ redoBtn.addEventListener("click", () => {
     textInput.value = undoStack.peek() || "";
   }
 });
+
+  // nothing 
+
+        navigator.getBattery()
+.then((item) =>document.getElementById('p').innerHTML='Battery lavel '+ item.level*100 +'%' )
     </script>
 </body>
 </html>
