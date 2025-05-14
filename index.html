@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Undo/Redo Using Stack</title>
+  <style>
+    body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: deepskyblue;
+}
+
+.container {
+  text-align: center;
+  background: lightskyblue;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+textarea {
+  width: 300px;
+  height: 100px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  background: dodgerblue;
+
+}
+
+.buttons button {
+  padding: 10px 15px;
+  margin: 5px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  width: 80px;
+}
+
+#undoBtn {
+  background-color: #ff6347;
+  color: white;
+}
+
+#redoBtn {
+  background-color: #4682b4;
+  color: white;
+}
+  </style>
+    
+</head>
+<body>
+    <div class="container">
+        <h2>Undo/Redo Feature Using Stack</h2>
+        <textarea id="textInput" placeholder="input text..."></textarea>
+        <div class="buttons">
+            <button id="undoBtn">Undo</button>
+            <button id="redoBtn">Redo</button>
+        </div>
+    </div>
+    <script >
+      class Stack {
+  constructor() {
+    this.items = [];
+  }
+  
+  push(item) {
+    this.items.push(item);
+  }
+  
+  pop() {
+    return this.items.pop();
+  }
+  
+  peek() {
+    return this.items[this.items.length - 1];
+  }
+  
+  isEmpty() {
+    return this.items.length === 0;
+  }
+}
+
+// Stack তৈরি করা
+const undoStack = new Stack();
+const redoStack = new Stack();
+
+const textInput = document.getElementById("textInput");
+const undoBtn = document.getElementById("undoBtn");
+const redoBtn = document.getElementById("redoBtn");
+
+// টেক্সট ইনপুট পরিবর্তন হলে স্ট্যাক এড করা হবে
+textInput.addEventListener("input", () => {
+  undoStack.push(textInput.value);
+  redoStack.items = []; 
+});
+
+// Undo Function
+undoBtn.addEventListener("click", () => {
+  if (!undoStack.isEmpty()) {
+    redoStack.push(undoStack.pop()); 
+    textInput.value = undoStack.peek() || ""; // আগের ভ্যালু রিসেট 
+  }
+});
+
+// Redo Function
+redoBtn.addEventListener("click", () => {
+  if (!redoStack.isEmpty()) {
+    undoStack.push(redoStack.pop()); // Redo হলে আবার Undo স্ট্যাকে পুশ করা হবে
+    textInput.value = undoStack.peek() || "";
+  }
+});
+    </script>
+</body>
+</html>
